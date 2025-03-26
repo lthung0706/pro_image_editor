@@ -42,26 +42,31 @@ class LayerWidgetTextItem extends StatelessWidget {
 
     return HeroMode(
       enabled: false,
-      child: RoundedBackgroundText(
-        onHitTestResult: (hasHit) {
-          // Update hit detection and cursor visibility state.
-          if (layer.hit != hasHit || showMoveCursor.value != hasHit) {
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.sizeOf(context).width-20
+        ),
+        child: RoundedBackgroundText(
+          onHitTestResult: (hasHit) {
+            // Update hit detection and cursor visibility state.
+            if (layer.hit != hasHit || showMoveCursor.value != hasHit) {
+              layer.hit = hasHit;
+              showMoveCursor.value = hasHit;
+            }
             layer.hit = hasHit;
-            showMoveCursor.value = hasHit;
-          }
-          layer.hit = hasHit;
-          onHitChanged(hasHit);
-        },
-        layer.text.toString(),
-        backgroundColor: layer.background,
-        textAlign: layer.align,
-        style: layer.textStyle?.copyWith(
-              fontSize: style.fontSize,
-              fontWeight: style.fontWeight,
-              color: style.color,
-              fontFamily: style.fontFamily,
-            ) ??
-            style,
+            onHitChanged(hasHit);
+          },
+          layer.text.toString(),
+          backgroundColor: layer.background,
+          textAlign: layer.align,
+          style: layer.textStyle?.copyWith(
+                fontSize: style.fontSize,
+                fontWeight: style.fontWeight,
+                color: style.color,
+                fontFamily: style.fontFamily,
+              ) ??
+              style,
+        ),
       ),
     );
   }
